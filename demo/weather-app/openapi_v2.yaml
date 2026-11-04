@@ -1,0 +1,48 @@
+openapi: 3.0.3
+info:
+  title: WeatherAPI
+  version: "2.0"
+paths:
+  /v2/current:
+    get:
+      operationId: getCurrentWeather
+      parameters:
+        - name: location
+          in: query
+          required: true
+          schema: {type: string}
+        - name: X-API-Version
+          in: header
+          required: true
+          schema: {type: string, enum: ["2"]}
+      responses:
+        "200":
+          description: Current conditions
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [location, temperature, wind]
+                properties:
+                  location: {type: string}
+                  temperature:
+                    type: object
+                    required: [current, unit]
+                    properties:
+                      current: {type: number}
+                      unit: {type: string, enum: [F]}
+                  wind:
+                    type: object
+                    required: [speed_mph]
+                    properties:
+                      speed_mph: {type: number}
+        "400":
+          description: Missing version header or location
+        "404":
+          description: Unknown location
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error: {type: string, enum: [not_found]}

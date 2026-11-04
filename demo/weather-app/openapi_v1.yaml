@@ -1,0 +1,33 @@
+openapi: 3.0.3
+info:
+  title: WeatherAPI
+  version: "1.0"
+paths:
+  /v1/weather:
+    get:
+      operationId: getCurrentWeather
+      parameters:
+        - name: city
+          in: query
+          required: true
+          schema: {type: string}
+      responses:
+        "200":
+          description: Current conditions
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [city, temp, wind_mph]
+                properties:
+                  city: {type: string}
+                  temp: {type: number, description: Temperature in Fahrenheit}
+                  wind_mph: {type: number}
+        "404":
+          description: Unknown city
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error: {type: string, enum: [not_found]}
