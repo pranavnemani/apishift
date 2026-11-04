@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>APIShift</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="bar">
+  <div class="brand"><span class="logo">⇄</span> APIShift <span class="tag">contract-driven API migration</span></div>
+  <div class="controls">
+    <select id="runSelect" aria-label="Recorded run"></select>
+    <button id="playBtn" class="btn">Play</button>
+    <div class="seg" role="group" aria-label="Speed">
+      <button data-speed="1" class="on">1x</button><button data-speed="3">3x</button><button data-speed="5">5x</button>
+    </div>
+    <button id="stepBtn" class="btn ghost">Step</button>
+    <button id="liveBtn" class="btn primary">Run live</button>
+  </div>
+</header>
+
+<section class="pipeline" id="pipeline"></section>
+
+<main class="grid">
+  <section class="panel log">
+    <h2>Agent log</h2>
+    <ol id="log"></ol>
+  </section>
+  <section class="panel diff">
+    <h2>Live diff</h2>
+    <pre id="diff" class="code">No changes yet.</pre>
+  </section>
+  <section class="panel tests">
+    <h2>Tests <span id="testsLabel" class="muted"></span></h2>
+    <div class="testrow"><span>Before</span><div class="meter"><i id="beforeBar"></i></div><b id="beforeTxt">–</b></div>
+    <div class="testrow"><span>Now</span><div class="meter"><i id="afterBar"></i></div><b id="afterTxt">–</b></div>
+    <ul id="failures" class="failures"></ul>
+    <h3>Guardrails</h3>
+    <ul id="guards" class="guards"><li class="muted">No edits yet.</li></ul>
+  </section>
+  <section class="panel graph">
+    <h2>Impact graph</h2>
+    <div id="graph" class="muted">Waiting for the Analyst.</div>
+    <h3>Cost</h3>
+    <dl class="cost">
+      <div><dt>Model calls</dt><dd id="cCalls">0</dd></div>
+      <div><dt>Input tokens</dt><dd id="cIn">0</dd></div>
+      <div><dt>Cached</dt><dd id="cCached">0%</dd></div>
+      <div><dt>Output tokens</dt><dd id="cOut">0</dd></div>
+      <div><dt>Cost</dt><dd id="cUsd">$0.000</dd></div>
+    </dl>
+  </section>
+</main>
+
+<footer class="bar result" id="result"><span class="muted">Pick a recorded run and press Play, or start a live run.</span></footer>
+
+<dialog id="liveDialog">
+  <form method="dialog" class="dlg">
+    <h2>Run live</h2>
+    <p class="muted">Runs the weather-app migration now. Takes about a minute and uses Meta API credits.
+      Replaying a recorded run makes no model calls.</p>
+    <label>Mode
+      <select id="liveMode"><option value="live">Live (Meta API)</option><option value="replay">Replay selected run (real tests, recorded model calls)</option></select>
+    </label>
+    <label>Your Meta API key (optional)
+      <input id="liveKey" type="password" autocomplete="off" placeholder="Uses the server key if empty">
+    </label>
+    <p id="liveErr" class="err"></p>
+    <div class="row"><button value="cancel" class="btn ghost">Cancel</button><button id="liveGo" value="go" class="btn primary">Start</button></div>
+  </form>
+</dialog>
+<script src="/static/app.js"></script>
+</body>
+</html>
